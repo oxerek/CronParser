@@ -1,0 +1,41 @@
+plugins {
+    id 'java'
+    id 'groovy'
+    id 'idea'
+}
+
+group 'pl.shift4'
+version '0.0.1'
+
+sourceCompatibility = JavaVersion.VERSION_18
+targetCompatibility = JavaVersion.VERSION_18
+
+configurations {
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'org.projectlombok:lombok:1.18.22'
+    implementation 'io.vavr:vavr:0.10.4'
+
+    annotationProcessor 'org.projectlombok:lombok:1.18.22'
+
+    testImplementation platform('org.spockframework:spock-bom:2.4-M1-groovy-4.0')
+    testImplementation 'org.spockframework:spock-core'
+}
+
+ext['groovy.version'] = '3.0.7'
+
+test {
+    useJUnitPlatform()
+
+    afterTest { desc, result ->
+        logger.quiet "Executing test \"${desc.name}\" [${desc.className}] with result: ${result.resultType} and took: ${result.endTime - result.startTime}ms"
+    }
+}
